@@ -1,0 +1,24 @@
+{
+  "name": "fbtestbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronniepanaligan/FBtestBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ronniepanaligan/FBtestBot/issues"
+  },
+  "homepage": "https://github.com/ronniepanaligan/FBtestBot#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "request": "^2.78.0"
+  }
+}
