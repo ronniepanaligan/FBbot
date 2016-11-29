@@ -102,9 +102,11 @@ function kittenMessage(recipientId, text) {
 
 const http = require('http')
 const Bot = require('messenger-bot')
+
 let bot = new Bot({
-  token: 'EAATGJmnDaq4BAKZA2GpuHZByPWM2SGhczZA7cnZB20TpvzHBkOLdFpmse6jPlOjsWeqLwcqSc4GZA3qTiFDdOZAdjMOGzZC1Uju5JtYPGByClVYfZASOnBCyWsz58FuygLLn9XinEejfYYYX7cQisZC3fCBnJ0p8YWQm53K1gZBg45owZDZD',
-  verify: 'testbot_verify_token'
+  token: 'PAGE_TOKEN',
+  verify: 'VERIFY_TOKEN',
+  app_secret: 'APP_SECRET'
 })
 
 bot.on('error', (err) => {
@@ -115,12 +117,12 @@ bot.on('message', (payload, reply) => {
   let text = payload.message.text
 
   bot.getProfile(payload.sender.id, (err, profile) => {
-    if(err) throw err
+    if (err) throw err
 
-    reply({text}, (err) => {
-      if(err) throw err
+    reply({ text }, (err) => {
+      if (err) throw err
 
-      console.log('Echoed back to ${profile.first_name} ${profile.last_name}: ${text}')
+      console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
     })
   })
 })
