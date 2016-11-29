@@ -104,9 +104,8 @@ const http = require('http')
 const Bot = require('messenger-bot')
 
 let bot = new Bot({
-  token: 'PAGE_TOKEN',
-  verify: 'VERIFY_TOKEN',
-  app_secret: 'APP_SECRET'
+  token: 'EAATGJmnDaq4BAIYd9L0PJlr2OcZAZAU4Timdqr36m2fDo12Hi0jW4ORq7T0xwODJ6cRPYVYgFEZCub7gmZCZC1Kq9CZAqVz0SsnqmTWQKTed5LWUkUBZCHsySsxcbLQ9JZCkiYdnVDn0q99vLeta8aAJUfuk3bXYZAWScUvbqe2rCHAZDZD',
+  verify: 'testbot_verify_token'
 })
 
 bot.on('error', (err) => {
