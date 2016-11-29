@@ -1,4 +1,4 @@
-/*var express = require('express');
+var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var app = express();
@@ -98,33 +98,4 @@ function kittenMessage(recipientId, text) {
 
     return false;
 
-};*/
-
-const http = require('http')
-const Bot = require('messenger-bot')
-
-let bot = new Bot({
-  token: 'EAATGJmnDaq4BAIYd9L0PJlr2OcZAZAU4Timdqr36m2fDo12Hi0jW4ORq7T0xwODJ6cRPYVYgFEZCub7gmZCZC1Kq9CZAqVz0SsnqmTWQKTed5LWUkUBZCHsySsxcbLQ9JZCkiYdnVDn0q99vLeta8aAJUfuk3bXYZAWScUvbqe2rCHAZDZD',
-  verify: 'testbot_verify_token'
-})
-
-bot.on('error', (err) => {
-  console.log(err.message)
-})
-
-bot.on('message', (payload, reply) => {
-  let text = payload.message.text
-
-  bot.getProfile(payload.sender.id, (err, profile) => {
-    if (err) throw err
-
-    reply({ text }, (err) => {
-      if (err) throw err
-
-      console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
-    })
-  })
-})
-
-http.createServer(bot.middleware()).listen(3000)
-console.log('Echo bot server running at port 3000.')
+};
