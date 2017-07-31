@@ -76,7 +76,7 @@ function addItem(recipientId, text) {
         if (err) throw err;
       });
 
-      sendMessage(recipientId, {text: value[1] + " added to database" });
+      sendMessage(recipientId, {text: values[1] + " added to database" });
 
       return true;
 
