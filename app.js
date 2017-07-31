@@ -61,14 +61,22 @@ function sendMessage(recipientId, message) {
     });
 };
 
-function helpMessage(recipientId, text) {
+function addItem(recipientId, text) {
 
     text = text || "";
     var values = text.split(' ');
 
-    if (values.length === 1 && values[0] === 'help') {
+    if (values.length === 3 && values[0] === 'add') {
+      var newItem = new Item({
+        name: values[1],
+        price: values[2]
+      });
 
-      sendMessage(recipientId, {text: "Echo: " + text});
+      newItem.save(function(err) {
+        if (err) throw err;
+      });
+
+      sendMessage(recipientId, {text: value[1] + " added to database" });
 
       return true;
 
