@@ -88,6 +88,11 @@ function addItem(recipientId, text) {
 };
 
 function printItems(recipientId) {
-  var query = Item.find({ userId: recipientId });
-  sendMessage(recipientId, query);
+  Item.find({ userId: recipientId }, function(err, items) {
+
+    if(err) throw err;
+
+    console.log(items);
+  });
+
 }
