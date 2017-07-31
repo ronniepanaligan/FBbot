@@ -92,7 +92,13 @@ function printItems(recipientId) {
 
     if(err) throw err;
 
-    console.log(items);
+    var arrayLength = items.length;
+    var total = 0;
+    for(var i = 0; i < arrayLength; i++) {
+      total = total + items[i].price;
+    }
+    console.log(total);
+    sendMessage(recipientId, {text: total});
   });
 
 }
