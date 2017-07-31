@@ -62,9 +62,8 @@ function helpMessage(recipientId, text) {
     var values = text.split(' ');
 
     if (values.length === 1 && values[0] === 'help') {
-      message = "help";
 
-      sendMessage(recipientId, message);
+      sendMessage(recipientId, text);
 
       return true;
 
