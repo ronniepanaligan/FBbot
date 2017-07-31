@@ -60,9 +60,9 @@ function helpMessage(recipientId, text) {
 
     text = text || "";
     var values = text.split(' ');
-
+    console.log('Help');
     if (values.length === 1 && values[0] === 'help') {
-
+      console.log('Help recieved');
       sendMessage(recipientId, text);
 
       return true;
