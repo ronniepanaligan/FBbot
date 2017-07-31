@@ -63,7 +63,7 @@ function helpMessage(recipientId, text) {
 
     if (values.length === 1 && values[0] === 'help') {
 
-      sendMessage(recipientId, {text: "Echo: " + message});
+      sendMessage(recipientId, {text: "Echo: " + text});
 
       return true;
 
