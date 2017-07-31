@@ -32,9 +32,12 @@ app.post('/webhook', function (req, res) {
   for (i = 0; i < events.length; i++) {
       var event = events[i];
       if (event.message && event.message.text) {
+          /*
           if (!addItem(event.sender.id, event.message.text)) {
               sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
           }
+          */
+          printItems(event.sender.id);
       } else if (event.postback) {
           console.log("Postback received: " + JSON.stringify(event.postback));
       }
@@ -68,6 +71,7 @@ function addItem(recipientId, text) {
 
     if (values.length === 3 && values[0] === 'add') {
       var newItem = new Item({
+        userId: recipientId,
         name: values[1],
         price: values[2]
       });
@@ -85,3 +89,8 @@ function addItem(recipientId, text) {
     return false;
 
 };
+
+function printItems(recipientId) {
+  var query = Item.find({ userId: recipientId });
+  sendMessage(recipientId, query);
+}
