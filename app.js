@@ -15,9 +15,9 @@ app.get('/', function (req, res) {
 // Facebook Webhook
 app.get('/webhook', function (req, res) {
     if (req.query['hub.verify_token'] === 'testbot_verify_token') {
-        res.send(req.query['hub.challenge']);
+        res.status(200).send(req.query['hub.challenge']);
     } else {
-        res.send('Invalid verify token');
+        res.sendStatus(403);
     }
 });
 
@@ -27,7 +27,7 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
-            if (!kittenMessage(event.sender.id, event.message.text)) {
+            if (!helpMessage(event.sender.id, event.message.text)) {
                 sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
             }
         } else if (event.postback) {
@@ -56,44 +56,18 @@ function sendMessage(recipientId, message) {
     });
 };
 
-// send rich message with kitten
-function kittenMessage(recipientId, text) {
+function helpMessage(recipientId, text) {
 
     text = text || "";
     var values = text.split(' ');
 
-    if (values.length === 3 && values[0] === 'kitten') {
-        if (Number(values[1]) > 0 && Number(values[2]) > 0) {
+    if (values.length === 1 && values[0] === 'help') {
+      message = "help";
 
-            var imageUrl = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);
+      sendMessage(recipientId, message);
 
-            message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "Kitten",
-                            "subtitle": "Cute kitten picture",
-                            "image_url": imageUrl ,
-                            "buttons": [{
-                                "type": "web_url",
-                                "url": imageUrl,
-                                "title": "Show kitten"
-                                }, {
-                                "type": "postback",
-                                "title": "I like this",
-                                "payload": "User " + recipientId + " likes kitten " + imageUrl,
-                            }]
-                        }]
-                    }
-                }
-            };
+      return true;
 
-            sendMessage(recipientId, message);
-
-            return true;
-        }
     }
 
     return false;
