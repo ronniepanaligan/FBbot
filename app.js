@@ -44,6 +44,24 @@ app.post('/webhook', function (req, res) {
 
 // generic function sending messages
 function sendMessage(recipientId, message) {
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
+    qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+    method: 'POST',
+    json:{
+      "get_started":{
+        "payload":"GET_STARTED_PAYLOAD"
+      }
+    }
+  }, function(error, response, body) {
+        console.log("Add persistent menu " + response)
+        if (error) {
+          console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+          console.log('Error: ', response.body.error)
+        }
+      })
+
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
