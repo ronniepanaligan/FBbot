@@ -1,6 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var mongoose = require('mongoose');
+
+var db = mongoose.connect(process.env.MONGODB_URI);
+var Item = require('./models/item');
+
 var app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -23,18 +28,18 @@ app.get('/webhook', function (req, res) {
 
 // handler receiving messages
 app.post('/webhook', function (req, res) {
-    var events = req.body.entry[0].messaging;
-    for (i = 0; i < events.length; i++) {
-        var event = events[i];
-        if (event.message && event.message.text) {
-            if (!helpMessage(event.sender.id, event.message.text)) {
-                sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
-            }
-        } else if (event.postback) {
-            console.log("Postback received: " + JSON.stringify(event.postback));
-        }
-    }
-    res.sendStatus(200);
+  var events = req.body.entry[0].messaging;
+  for (i = 0; i < events.length; i++) {
+      var event = events[i];
+      if (event.message && event.message.text) {
+          if (!helpMessage(event.sender.id, event.message.text)) {
+              sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
+          }
+      } else if (event.postback) {
+          console.log("Postback received: " + JSON.stringify(event.postback));
+      }
+  }
+  res.sendStatus(200);
 });
 
 // generic function sending messages
