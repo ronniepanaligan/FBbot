@@ -28,23 +28,6 @@ app.get('/webhook', function (req, res) {
 
 // handler receiving messages
 app.post('/webhook', function (req, res) {
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
-    qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-    method: 'POST',
-    json:{
-      "get_started":{
-        "payload":"GET_STARTED_PAYLOAD"
-      }
-    }
-  }, function(error, response, body) {
-        console.log("Add persistent menu " + response)
-        if (error) {
-          console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-          console.log('Error: ', response.body.error)
-        }
-  });
   var events = req.body.entry[0].messaging;
   for (i = 0; i < events.length; i++) {
       var event = events[i];
