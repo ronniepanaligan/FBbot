@@ -44,7 +44,7 @@ function processMessage(recipientId, text) {
   var msg = text.split(' ');
 
   switch (msg) {
-    case: "add":
+    case "add":
       sendMessage(recipientId, {text: "hi"});
       break;
     default:
