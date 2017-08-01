@@ -41,8 +41,7 @@ app.post('/webhook', function (req, res) {
 });
 
 function processMessage(recipientId, text) {
-  var msg = text.toLowerCase().trim();
-  msg = msg.split(' ');
+  var msg = text.split(' ');
 
   switch (msg) {
     case: "add":
