@@ -28,27 +28,15 @@ app.get('/webhook', function (req, res) {
 
 // handler receiving messages
 app.post('/webhook', function (req, res) {
-  /*
   var events = req.body.entry[0].messaging;
   for (i = 0; i < events.length; i++) {
       var event = events[i];
       if (event.message && event.message.text) {
-          if (!addItem(event.sender.id, event.message.text)) {
-              printItems(event.sender.id);
-          }
+          processMessage(event.sender.id, event.message.text);
       } else if (event.postback) {
           console.log("Postback received: " + JSON.stringify(event.postback));
       }
   }
-  res.sendStatus(200);
-  */
-
-  req.body.entry.forEach(function(entry) {
-    entry.messaging.forEach(function(event) {
-        processMessage(event.sender.id, event.message.text);
-      }
-    });
-  });
   res.sendStatus(200);
 });
 
@@ -63,7 +51,7 @@ function processMessage(recipientId, text) {
     default:
       sendMessage(recipientId, {text: "bye"});
   }
-}
+};
 
 // generic function sending messages
 function sendMessage(recipientId, message) {
