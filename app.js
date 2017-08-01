@@ -35,6 +35,7 @@ app.post('/webhook', function (req, res) {
           processMessage(event.sender.id, event.message.text);
       } else if (event.postback) {
           console.log("Postback received: " + JSON.stringify(event.postback));
+          processPostback(event.sender.id, event.postback.payload);
       }
   }
   res.sendStatus(200);
@@ -52,6 +53,23 @@ function processMessage(recipientId, text) {
       sendMessage(recipientId, {text: values[0]});
   }
 };
+
+function processPostback(recipientId, postb) {
+  if(postb === "GET_STARTED_PAYLOAD") {
+    var message = {
+      text: "Choose from the following:",
+      quick_replies: [
+        {
+          content_type: "text",
+          title: "Add an item",
+          payload: "ADD_ITEM"
+        }
+      ]
+    };
+
+    sendMessage(recipientId, message);
+  }
+}
 
 // generic function sending messages
 function sendMessage(recipientId, message) {
