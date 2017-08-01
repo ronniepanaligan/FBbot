@@ -28,6 +28,7 @@ app.get('/webhook', function (req, res) {
 
 // handler receiving messages
 app.post('/webhook', function (req, res) {
+  /*
   var events = req.body.entry[0].messaging;
   for (i = 0; i < events.length; i++) {
       var event = events[i];
@@ -40,7 +41,32 @@ app.post('/webhook', function (req, res) {
       }
   }
   res.sendStatus(200);
+  */
+
+  req.body.entry.forEach(function(entry) {
+    entry.messaging.forEach(function(event) {
+      if(event.postback) {
+        processPostback(event.sender.id, event.postback);
+      } else if(event.message) {
+        processMessage(event.sender.id, event.message.text);
+      }
+    });
+  });
+  res.sendStatus(200);
 });
+
+function processMessage(recipientId, text) {
+  var msg = text.toLowerCase().trim();
+  msg = msg.split(' ');
+
+  switch (msg) {
+    case: "add":
+      sendMessage(recipientId, {text: "hi"});
+      break;
+    default:
+      sendMessage(recipientId, {text: "bye"});
+  }
+}
 
 // generic function sending messages
 function sendMessage(recipientId, message) {
