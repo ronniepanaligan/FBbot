@@ -45,7 +45,7 @@ function processMessage(recipientId, text) {
 
   switch (msg) {
     case "add":
-      sendMessage(recipientId, {text: "hi"});
+      sendMessage(recipientId, {text: msg});
       break;
     default:
       sendMessage(recipientId, {text: "bye"});
