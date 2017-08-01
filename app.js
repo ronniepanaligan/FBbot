@@ -48,7 +48,7 @@ function processMessage(recipientId, text) {
       sendMessage(recipientId, {text: msg});
       break;
     default:
-      sendMessage(recipientId, {text: "bye"});
+      sendMessage(recipientId, {text: msg});
   }
 };
 
