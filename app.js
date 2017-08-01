@@ -41,14 +41,15 @@ app.post('/webhook', function (req, res) {
 });
 
 function processMessage(recipientId, text) {
-  var msg = text.split(' ');
+  text = text || "";
+  var values = text.split(' ');
 
-  switch (msg) {
+  switch (values[0]) {
     case "add":
-      sendMessage(recipientId, {text: msg});
+      sendMessage(recipientId, {text: values[0]});
       break;
     default:
-      sendMessage(recipientId, {text: msg});
+      sendMessage(recipientId, {text: values[0]});
   }
 };
 
