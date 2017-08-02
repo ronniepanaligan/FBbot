@@ -60,7 +60,7 @@ app.post('/webhook', function (req, res) {
       }
       */
       console.log(JSON.stringify(event));
-      sendMessage(recipientId, {text: "hi"});
+      sendMessage(event.sender.id, {text: "hi"});
   }
   res.sendStatus(200);
 });
