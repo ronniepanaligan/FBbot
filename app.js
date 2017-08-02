@@ -7,6 +7,26 @@ var db = mongoose.connect(process.env.MONGODB_URI);
 var Item = require('./models/item');
 
 var app = express();
+/*
+0 = default
+1 = adding item
+*/
+var state = 0;
+var message = {
+  text: "Choose from the following:",
+  quick_replies: [
+    {
+      content_type: "text",
+      title: "Add an item",
+      payload: "ADD_ITEM"
+    },
+    {
+      content_type: "text",
+      title: "View all purchases",
+      payload: "VIEW_ITEMS"
+    }
+  ]
+};
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -47,9 +67,12 @@ function processMessage(recipientId, text) {
   text = text || "";
   var values = text.split(' ');
 
-  switch (values[0]) {
-    case "Add":
-      sendMessage(recipientId, {text: "check"});
+  switch (state) {
+    case 1:
+      addItem(recipientId, text);
+      sendMessage(recipientId, {text: "added to database"});
+      sendMessage(recipientId, message);
+      state = 0;
       break;
     default:
       sendMessage(recipientId, {text: values[0]});
@@ -58,26 +81,13 @@ function processMessage(recipientId, text) {
 
 function processPostback(recipientId, postb) {
   if(postb === "GET_STARTED_PAYLOAD") {
-    var message = {
-      text: "Choose from the following:",
-      quick_replies: [
-        {
-          content_type: "text",
-          title: "Add an item",
-          payload: "ADD_ITEM"
-        },
-        {
-          content_type: "text",
-          title: "View all purchases",
-          payload: "VIEW_ITEMS"
-        }
-      ]
-    };
     sendMessage(recipientId, message);
   } else if(postb === "ADD_ITEM") {
     sendMessage(recipientId, {text: "added"});
+    sendMessage(recipientId, {text: "Please enter the product and price"});
   } else {
     sendMessage(recipientId, {text: "I don't understand please try again"});
+    sendMessage(recipientId, message);
   }
 }
 
