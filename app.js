@@ -61,7 +61,7 @@ app.post('/webhook', function (req, res) {
       */
       if(event.message) {
         console.log(JSON.stringify(event));
-        sendMessage(event.sender.id, message);
+        processMessage(event.sender.id, event.message);
       }
       if(event.postback) {
         console.log(JSON.stringify(event));
@@ -72,31 +72,29 @@ app.post('/webhook', function (req, res) {
 });
 
 function processMessage(recipientId, text) {
-  text = text || "";
-  var values = text.split(' ');
-
-  switch (state) {
-    case 1:
-      addItem(recipientId, text);
-      sendMessage(recipientId, {text: "added to database"});
-      sendMessage(recipientId, message);
-      state = 0;
-      break;
-    default:
-      sendMessage(recipientId, {text: values[0]});
-  }
+  if(text.quick_reply) {
+    sendMessage(recipientId, {text: "Please enter the product and price"});
+    state = 1;
+  } else {
+      switch (state) {
+        case 1:
+          addItem(recipientId, text.text);
+          sendMessage(recipientId, {text: "added to database"});
+          sendMessage(recipientId, message);
+          state = 0;
+        break;
+          default:
+          sendMessage(recipientId, {text: "Error"});
+          sendMessage(recipientId, message);
+      }
+    }
 };
 
 function processPostback(recipientId, postb) {
   if(postb === "GET_STARTED_PAYLOAD") {
     sendMessage(recipientId, message);
-  } else if(postb === "ADD_ITEM") {
-    sendMessage(recipientId, {text: "added"});
-    sendMessage(recipientId, {text: "Please enter the product and price"});
-    state = 1;
   } else {
-    sendMessage(recipientId, {text: "I don't understand please try again"});
-    sendMessage(recipientId, message);
+    sendMessage(recipientId, {text: "Error"});
   }
 }
 
