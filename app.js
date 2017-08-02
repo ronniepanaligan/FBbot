@@ -46,8 +46,8 @@ function processMessage(recipientId, text) {
   var values = text.split(' ');
 
   switch (values[0]) {
-    case "add":
-      sendMessage(recipientId, {text: values[0]});
+    case "Add":
+      processPostback(recipientId, {text: values[0]});
       break;
     default:
       sendMessage(recipientId, {text: values[0]});
@@ -63,11 +63,21 @@ function processPostback(recipientId, postb) {
           content_type: "text",
           title: "Add an item",
           payload: "ADD_ITEM"
+        },
+        {
+          content_type: "text",
+          title: "View all purchases".
+          payload: "VIEW_ITEMS"
         }
       ]
     };
 
-    sendMessage(recipientId, message);
+    processPostback(recipientId, message.quick_replies.payload);
+  } else if(postb === "ADD_ITEM") {
+    sendMessage(recipientId, {text: "added"});
+  } else {
+    sendMessage(recipientId, {text: "I don't understand please try again"});
+    processPostback(recipientId, "GET_STARTED_PAYLOAD";)
   }
 }
 
