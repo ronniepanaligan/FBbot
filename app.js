@@ -59,8 +59,10 @@ app.post('/webhook', function (req, res) {
         processMessage(event.sender.id, event.message);
       }
       */
-      console.log(JSON.stringify(event));
-      sendMessage(event.sender.id, {text: "hi"});
+      if(event.postback || event.message) {
+        console.log(JSON.stringify(event));
+        sendMessage(event.sender.id, {text: "hi"});
+      }
   }
   res.sendStatus(200);
 });
