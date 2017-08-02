@@ -47,7 +47,7 @@ function processMessage(recipientId, text) {
 
   switch (values[0]) {
     case "Add":
-      processPostback(recipientId, {text: values[0]});
+      processPostback(recipientId, "ADD_ITEM");
       break;
     default:
       sendMessage(recipientId, {text: values[0]});
