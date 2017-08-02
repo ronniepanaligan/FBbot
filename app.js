@@ -71,6 +71,7 @@ function processPostback(recipientId, postb) {
         }
       ]
     };
+    sendMessage(recipientId, message);
   } else if(postb === "ADD_ITEM") {
     sendMessage(recipientId, {text: "added"});
   } else {
