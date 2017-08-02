@@ -77,7 +77,7 @@ function processPostback(recipientId, postb) {
     sendMessage(recipientId, {text: "added"});
   } else {
     sendMessage(recipientId, {text: "I don't understand please try again"});
-    processPostback(recipientId, "GET_STARTED_PAYLOAD";)
+    processPostback(recipientId, "GET_STARTED_PAYLOAD");
   }
 }
 
