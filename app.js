@@ -79,7 +79,6 @@ function processMessage(recipientId, text) {
       switch (state) {
         case 1:
           addItem(recipientId, text.text);
-          sendMessage(recipientId, {text: "added to database"});
           sendMessage(recipientId, message);
           state = 0;
         break;
@@ -135,12 +134,7 @@ function addItem(recipientId, text) {
 
       sendMessage(recipientId, {text: values[1] + " added to database" });
 
-      return true;
-
     }
-
-    return false;
-
 };
 
 function printItems(recipientId) {
