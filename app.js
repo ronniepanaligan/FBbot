@@ -66,13 +66,11 @@ function processPostback(recipientId, postb) {
         },
         {
           content_type: "text",
-          title: "View all purchases".
+          title: "View all purchases",
           payload: "VIEW_ITEMS"
         }
       ]
     };
-
-    processPostback(recipientId, message.quick_replies.payload);
   } else if(postb === "ADD_ITEM") {
     sendMessage(recipientId, {text: "added"});
   } else {
