@@ -51,14 +51,16 @@ app.post('/webhook', function (req, res) {
   var events = req.body.entry[0].messaging;
   for (i = 0; i < events.length; i++) {
       var event = events[i];
+      /*
       if (event.postback) {
           console.log("Postback received: " + JSON.stringify(event.postback));
           processPostback(event.sender.id, event.postback.payload);
-      } else if(event.message && event.message.quick_reply.payload) {
-          processPostback(event.sender.id, event.message.quick_reply.payload);
-      } else {
-        processMessage(event.sender.id, event.message.text);
+      } else if(event.message) {
+        processMessage(event.sender.id, event.message);
       }
+      */
+      console.log(JSON.stringify(event));
+      sendMessage(recipientId, {text: "hi"});
   }
   res.sendStatus(200);
 });
