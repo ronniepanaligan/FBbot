@@ -83,12 +83,11 @@ function processMessage(recipientId, text) {
       switch (state) {
         case 1:
           addItem(recipientId, text.text);
+          state = 0;
           break;
         default:
           sendMessage(recipientId, {text: "Error"});
       }
-      sendMessage(recipientId, message);
-      state = 0;
     }
 };
 
@@ -138,6 +137,7 @@ function addItem(recipientId, text) {
       sendMessage(recipientId, {text: values[1] + " added to database" });
 
     }
+    sendMessage(recipientId, message);
 };
 
 function printItems(recipientId) {
@@ -152,7 +152,9 @@ function printItems(recipientId) {
     }
     console.log(total);
     sendMessage(recipientId, {text: total});
-    sendMessage(recipientId, message);
+
   });
+
+  sendMessage(recipientId, message);
 
 }
