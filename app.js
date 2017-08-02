@@ -36,6 +36,8 @@ app.post('/webhook', function (req, res) {
       } else if (event.postback) {
           console.log("Postback received: " + JSON.stringify(event.postback));
           processPostback(event.sender.id, event.postback.payload);
+      } else if(event.message.quick_reply) {
+          processPostback(event.sender.id, event.message.quick_reply.payload);
       }
   }
   res.sendStatus(200);
@@ -47,7 +49,7 @@ function processMessage(recipientId, text) {
 
   switch (values[0]) {
     case "Add":
-      processPostback(recipientId, "ADD_ITEM");
+      sendMessage(recipientId, {text: "check"});
       break;
     default:
       sendMessage(recipientId, {text: values[0]});
