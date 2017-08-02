@@ -54,7 +54,7 @@ app.post('/webhook', function (req, res) {
       if (event.postback) {
           console.log("Postback received: " + JSON.stringify(event.postback));
           processPostback(event.sender.id, event.postback.payload);
-      } else if(event.message.quick_reply) {
+      } else if(evevent.message.quick_reply.payload) {
           processPostback(event.sender.id, event.message.quick_reply.payload);
       } else {
         processMessage(event.sender.id, event.message.text);
@@ -85,6 +85,7 @@ function processPostback(recipientId, postb) {
   } else if(postb === "ADD_ITEM") {
     sendMessage(recipientId, {text: "added"});
     sendMessage(recipientId, {text: "Please enter the product and price"});
+    state = 1;
   } else {
     sendMessage(recipientId, {text: "I don't understand please try again"});
     sendMessage(recipientId, message);
@@ -115,11 +116,11 @@ function addItem(recipientId, text) {
     text = text || "";
     var values = text.split(' ');
 
-    if (values.length === 3 && values[0] === 'add') {
+    if (values.length === 2) {
       var newItem = new Item({
         userId: recipientId,
-        name: values[1],
-        price: values[2]
+        name: values[0],
+        price: values[1]
       });
 
       newItem.save(function(err) {
