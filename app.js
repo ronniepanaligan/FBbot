@@ -62,10 +62,10 @@ app.post('/webhook', function (req, res) {
       if(event.message) {
         console.log(JSON.stringify(event));
         processMessage(event.sender.id, event.message);
-      }
-      if(event.postback) {
-        console.log(JSON.stringify(event));
-        processPostback(event.sender.id, event.postback.payload);
+        sendMessage(event.sender.id, message);
+      } else if(event.postback) {
+          console.log(JSON.stringify(event));
+          processPostback(event.sender.id, event.postback.payload);
       }
   }
   res.sendStatus(200);
@@ -78,7 +78,6 @@ function processMessage(recipientId, text) {
       state = 1;
     } else {
       printItems(recipientId);
-      sendMessage(recipientId, message);
     }
   } else {
       switch (state) {
@@ -87,9 +86,8 @@ function processMessage(recipientId, text) {
           state = 0;
           break;
         default:
-          sendMessage(recipientId, {text: "Error"});
+          sendMessage(recipientId, {text: "Error 1"});
       }
-      sendMessage(recipientId, message);
     }
 };
 
