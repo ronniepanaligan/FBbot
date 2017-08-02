@@ -73,19 +73,22 @@ app.post('/webhook', function (req, res) {
 
 function processMessage(recipientId, text) {
   if(text.quick_reply) {
-    sendMessage(recipientId, {text: "Please enter the product and price"});
-    state = 1;
+    if(text.quick_reply.payload === "ADD_ITEM") {
+      sendMessage(recipientId, {text: "Please enter the product and price"});
+      state = 1;
+    } else {
+      printItems(recipientId);
+    }
   } else {
       switch (state) {
         case 1:
           addItem(recipientId, text.text);
-          sendMessage(recipientId, message);
-          state = 0;
-        break;
-          default:
+          break;
+        default:
           sendMessage(recipientId, {text: "Error"});
-          sendMessage(recipientId, message);
       }
+      sendMessage(recipientId, message);
+      state = 0;
     }
 };
 
@@ -149,6 +152,7 @@ function printItems(recipientId) {
     }
     console.log(total);
     sendMessage(recipientId, {text: total});
+    sendMessage(recipientId, message);
   });
 
 }
