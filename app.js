@@ -78,6 +78,7 @@ function processMessage(recipientId, text) {
       state = 1;
     } else {
       printItems(recipientId);
+      sendMessage(recipientId, message);
     }
   } else {
       switch (state) {
@@ -88,6 +89,7 @@ function processMessage(recipientId, text) {
         default:
           sendMessage(recipientId, {text: "Error"});
       }
+      sendMessage(recipientId, message);
     }
 };
 
@@ -137,7 +139,6 @@ function addItem(recipientId, text) {
       sendMessage(recipientId, {text: values[1] + " added to database" });
 
     }
-    sendMessage(recipientId, message);
 };
 
 function printItems(recipientId) {
@@ -154,7 +155,4 @@ function printItems(recipientId) {
     sendMessage(recipientId, {text: total});
 
   });
-
-  sendMessage(recipientId, message);
-
 }
