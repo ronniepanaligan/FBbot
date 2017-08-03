@@ -8,8 +8,11 @@ var Item = require('./models/item');
 
 var app = express();
 /*
-0 = default
-1 = adding item
+state keeps track of whether the conversation has ended or not.
+At the end of a conversation, the bot will resend the quick reply options
+0 = no conversation
+1 = adding item conversation
+2 = view all purchases conversation
 */
 var state = 0;
 var message = {
@@ -63,6 +66,7 @@ app.post('/webhook', function (req, res) {
 });
 
 function processMessage(recipientId, text) {
+  //determines what state the bot should be in based on the quick reply chosen
   if(text.quick_reply) {
     if(text.quick_reply.payload === "ADD_ITEM") {
       sendMessage(recipientId, {text: "Please enter the product and price"});
@@ -72,12 +76,11 @@ function processMessage(recipientId, text) {
       state = 2;
     }
   } else {
-      switch (state) {
-        case 1:
-          addItem(recipientId, text.text);
-          break;
-        default:
-          sendMessage(recipientId, {text: "Error 1"});
+      //these are comments in the middle of a conversation
+      if(state == 1) {
+        addItem(recipientId, text.text);
+      } else {
+        sendMessage(recipientId, {text: "Sorry I don't understand your message"});
       }
     }
 };
@@ -106,7 +109,7 @@ function sendMessage(recipientId, message0) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
-        } else if(state == 2){
+        } else if(state == 2 || state == 1){
           console.log(response.body);
           state = 0;
           sendMessage(recipientId, message);
