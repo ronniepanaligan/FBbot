@@ -106,6 +106,7 @@ function sendMessage(recipientId, message) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         }
+        console.log(response);
     });
 };
 
@@ -143,6 +144,5 @@ function printItems(recipientId) {
     console.log(total);
     state = 2;
     sendMessage(recipientId, {text: total});
-    processPostback(recipientId, "GET_STARTED_PAYLOAD");
   });
 }
