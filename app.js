@@ -74,7 +74,6 @@ function processMessage(recipientId, text) {
       switch (state) {
         case 1:
           addItem(recipientId, text.text);
-          state = 0;
           break;
         default:
           sendMessage(recipientId, {text: "Error 1"});
@@ -91,22 +90,25 @@ function processPostback(recipientId, postb) {
 }
 
 // generic function sending messages
-function sendMessage(recipientId, message) {
+function sendMessage(recipientId, message0) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: {
             recipient: {id: recipientId},
-            message: message,
+            message: message0,
         }
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
+        } else if(response.body.message_id && state == 1){
+          console.log(response.body);
+          state = 0;
+          sendMessage(recipientId, message);
         }
-        console.log(response.body);
     });
 };
 
@@ -142,7 +144,6 @@ function printItems(recipientId) {
       total = +total + +items[i].price;
     }
     console.log(total);
-    state = 2;
     sendMessage(recipientId, {text: total});
   });
 }
