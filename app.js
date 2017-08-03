@@ -69,6 +69,7 @@ function processMessage(recipientId, text) {
       state = 1;
     } else {
       printItems(recipientId);
+      state = 2;
     }
   } else {
       switch (state) {
@@ -105,7 +106,7 @@ function sendMessage(recipientId, message0) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
-        } else if(state == 1){
+        } else if(state == 2){
           console.log(response.body);
           state = 0;
           sendMessage(recipientId, message);
