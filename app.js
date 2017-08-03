@@ -74,9 +74,7 @@ function processMessage(recipientId, text) {
       switch (state) {
         case 1:
           addItem(recipientId, text.text);
-          if(state == 0) {
-            sendMessage(recipientId, message);
-          }
+          state = 0;
           break;
         default:
           sendMessage(recipientId, {text: "Error 1"});
@@ -93,14 +91,14 @@ function processPostback(recipientId, postb) {
 }
 
 // generic function sending messages
-function sendMessage(recipientId, message) {
+function sendMessage(recipientId, message0) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: {
             recipient: {id: recipientId},
-            message: message,
+            message: message0,
         }
     }, function(error, response, body) {
         if (error) {
@@ -109,6 +107,24 @@ function sendMessage(recipientId, message) {
             console.log('Error: ', response.body.error);
         }
     });
+    if(state == 2) {
+      request({
+          url: 'https://graph.facebook.com/v2.6/me/messages',
+          qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+          method: 'POST',
+          json: {
+              recipient: {id: recipientId},
+              message: message,
+          }
+      }, function(error, response, body) {
+          if (error) {
+              console.log('Error sending message: ', error);
+          } else if (response.body.error) {
+              console.log('Error: ', response.body.error);
+          }
+      });
+      state = 0;
+    }
 };
 
 function addItem(recipientId, text) {
@@ -143,7 +159,7 @@ function printItems(recipientId) {
       total = +total + +items[i].price;
     }
     console.log(total);
+    state = 2;
     sendMessage(recipientId, {text: total});
-    state = 0;
   });
 }
