@@ -51,14 +51,6 @@ app.post('/webhook', function (req, res) {
   var events = req.body.entry[0].messaging;
   for (i = 0; i < events.length; i++) {
       var event = events[i];
-      /*
-      if (event.postback) {
-          console.log("Postback received: " + JSON.stringify(event.postback));
-          processPostback(event.sender.id, event.postback.payload);
-      } else if(event.message) {
-        processMessage(event.sender.id, event.message);
-      }
-      */
       if(event.message) {
         console.log(JSON.stringify(event));
         processMessage(event.sender.id, event.message);
@@ -82,7 +74,9 @@ function processMessage(recipientId, text) {
       switch (state) {
         case 1:
           addItem(recipientId, text.text);
-          state = 0;
+          if(state == 0) {
+            sendMessage(recipientId, message);
+          }
           break;
         default:
           sendMessage(recipientId, {text: "Error 1"});
@@ -150,6 +144,6 @@ function printItems(recipientId) {
     }
     console.log(total);
     sendMessage(recipientId, {text: total});
-
+    state = 0;
   });
 }
