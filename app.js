@@ -9,10 +9,10 @@ var Item = require('./models/item');
 var app = express();
 /*
 state keeps track of whether the conversation has ended or not.
-At the end of a conversation, the bot will resend the quick reply options
-0 = no conversation
-1 = adding item conversation
-2 = view all purchases conversation
+The value of state indicates how many messages the bot has sent.
+At this point the max number of steps is 2. Once the state is 2
+and the sendMessage function is called, the conversation is finished
+At the end of a conversation, the bot will resend the quick reply options.
 */
 var state = 0;
 var message = {
@@ -80,6 +80,7 @@ function processMessage(recipientId, text) {
       if(state == 1) {
         addItem(recipientId, text.text);
       } else {
+        state = 2;
         sendMessage(recipientId, {text: "Sorry I don't understand your message"});
       }
     }
@@ -95,7 +96,6 @@ function processPostback(recipientId, postb) {
 
 // generic function sending messages
 function sendMessage(recipientId, message0) {
-  console.log("state = ", state);
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -115,7 +115,6 @@ function sendMessage(recipientId, message0) {
           sendMessage(recipientId, message);
         }
     });
-    console.log("state = ", state);
 };
 
 function addItem(recipientId, text) {
