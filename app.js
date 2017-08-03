@@ -133,7 +133,7 @@ function addItem(recipientId, text) {
       newItem.save(function(err) {
         if (err) throw err;
       });
-
+      state = 2;
       sendMessage(recipientId, {text: values[1] + " added to database" });
 
     }
