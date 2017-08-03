@@ -70,16 +70,16 @@ function processMessage(recipientId, text) {
   if(text.quick_reply) {
     if(text.quick_reply.payload === "ADD_ITEM") {
       sendMessage(recipientId, {text: "Please enter the product and price"});
+      //state = 1 because the bot will send one more message indicating whether item has been added or not
       state = 1;
     } else {
       printItems(recipientId);
-      state = 2;
     }
   } else {
-      //these are comments in the middle of a conversation
       if(state == 1) {
         addItem(recipientId, text.text);
       } else {
+        //state set to 2 because there was an error between the bot and user so conversation will be reset
         state = 2;
         sendMessage(recipientId, {text: "Sorry I don't understand your message"});
       }
@@ -87,6 +87,7 @@ function processMessage(recipientId, text) {
 };
 
 function processPostback(recipientId, postb) {
+  // Start of conversation
   if(postb === "GET_STARTED_PAYLOAD") {
     sendMessage(recipientId, message);
   } else {
@@ -110,6 +111,7 @@ function sendMessage(recipientId, message0) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         } else if(state == 2){
+          //conversation is finished, resend quick_reply options
           console.log(response.body);
           state = 0;
           sendMessage(recipientId, message);
@@ -132,6 +134,7 @@ function addItem(recipientId, text) {
       newItem.save(function(err) {
         if (err) throw err;
       });
+      //state has been set to 2 because the conversation will end and it needs to send quick_reply
       state = 2;
       sendMessage(recipientId, {text: values[1] + " added to database" });
 
@@ -149,6 +152,8 @@ function printItems(recipientId) {
       total = +total + +items[i].price;
     }
     console.log(total);
+    //state has been set to 2 because the conversation will end and it needs to send quick_reply
+    state = 2;
     sendMessage(recipientId, {text: total});
   });
 }
