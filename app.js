@@ -91,6 +91,7 @@ function processPostback(recipientId, postb) {
 
 // generic function sending messages
 function sendMessage(recipientId, message0) {
+  console.log("state = ", state);
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -110,6 +111,7 @@ function sendMessage(recipientId, message0) {
           sendMessage(recipientId, message);
         }
     });
+    console.log("state = ", state);
 };
 
 function addItem(recipientId, text) {
