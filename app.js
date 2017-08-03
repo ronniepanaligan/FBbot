@@ -62,7 +62,6 @@ app.post('/webhook', function (req, res) {
       if(event.message) {
         console.log(JSON.stringify(event));
         processMessage(event.sender.id, event.message);
-        sendMessage(event.sender.id, message);
       } else if(event.postback) {
           console.log(JSON.stringify(event));
           processPostback(event.sender.id, event.postback.payload);
