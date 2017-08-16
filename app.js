@@ -8,6 +8,24 @@ var Item = require('./models/item');
 
 var app = express();
 
+var state = 0;
+var message = {
+  text: "Choose from the following:",
+  quick_replies: [
+    {
+      content_type: "text",
+      title: "Add an item",
+      payload: "ADD_ITEM"
+    },
+    {
+      content_type: "text",
+      title: "View all purchases",
+      payload: "VIEW_ITEMS"
+    }
+  ]
+};
+
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
