@@ -1,6 +1,23 @@
 var request = require('request');
 var Item = require('../models/item');
 
+var state = 0;
+var message = {
+  text: "Choose from the following:",
+  quick_replies: [
+    {
+      content_type: "text",
+      title: "Add an item",
+      payload: "ADD_ITEM"
+    },
+    {
+      content_type: "text",
+      title: "View all purchases",
+      payload: "VIEW_ITEMS"
+    }
+  ]
+};
+
 module.exports = {
   function processMessage(recipientId, msg) {
     //determines what state the bot should be in based on the quick reply chosen
