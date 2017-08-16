@@ -19,7 +19,7 @@ var message = {
 };
 
 module.exports = {
-  function processMessage(recipientId, msg) {
+  processMessage: function(recipientId, msg) {
     //determines what state the bot should be in based on the quick reply chosen
     if(msg.quick_reply) {
       if(msg.quick_reply.payload === "ADD_ITEM") {
@@ -41,19 +41,19 @@ module.exports = {
           sendMessage(recipientId, {text: "Sorry I don't understand your message"});
         }
       }
-  };
+  },
 
-  function processPostback(recipientId, postb) {
+  processPostback: function(recipientId, postb) {
     // Start of conversation
     if(postb === "GET_STARTED_PAYLOAD") {
       sendMessage(recipientId, message);
     } else {
       sendMessage(recipientId, {text: "Error"});
     }
-  }
+  },
 
   // generic function sending messages
-  function sendMessage(recipientId, message0) {
+  sendMessage: function(recipientId, message0) {
       request({
           url: 'https://graph.facebook.com/v2.6/me/messages',
           qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -74,9 +74,9 @@ module.exports = {
             sendMessage(recipientId, message);
           }
       });
-  };
+  },
 
-  function addItem(recipientId, text) {
+  addItem: function(recipientId, text) {
 
       text = text || "";
       var values = text.split(' ');
@@ -96,9 +96,9 @@ module.exports = {
         sendMessage(recipientId, {text: values[1] + " added to database" });
 
       }
-  };
+  },
 
-  function printItems(recipientId) {
+  printItems: function(recipientId) {
     Item.find({ userId: recipientId }, function(err, items) {
 
       if(err) throw err;
